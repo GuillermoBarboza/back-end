@@ -7,10 +7,12 @@ mongoose.set("useFindAndModify", false);
 const UserModel = require("./User");
 const ProductModel = require("./Product");
 const OrderModel = require("./Order");
+const CategoryModel = require("./Category");
 
 const User = UserModel(mongoose, Schema);
 const Product = ProductModel(mongoose, Schema);
 const Order = OrderModel(mongoose, Schema);
+const Category = CategoryModel(mongoose, Schema);
 
 const db = mongoose.connection;
 db.on("error", (error) => console.log(error));
@@ -23,4 +25,5 @@ module.exports = {
   User,
   Product,
   Order,
+  Category,
 };

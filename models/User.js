@@ -9,7 +9,7 @@ module.exports = (mongoose, Schema) => {
     address: { type: String, required: true },
     telephone: { type: Number, required: true },
     password: { type: String, required: true },
-    orderlist: [{ type: Schema.Types.ObjectId, ref: "Orders" }],
+    orderlist: [{ type: Schema.Types.ObjectId, ref: "Order" }],
     tokens: [],
   });
 

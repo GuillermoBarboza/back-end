@@ -6,7 +6,7 @@ module.exports = (mongoose, Schema) => {
     description: { type: String, required: true },
     image: { type: String, required: true },
     price: { type: Number, required: true },
-    category: { type: String, required: true },
+    category: { type: Schema.Types.ObjectId, ref: "Category" },
     stock: { type: Number, required: true },
     featured: { type: Boolean, required: true },
     slug: { type: String, required: true },
