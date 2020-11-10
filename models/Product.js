@@ -11,4 +11,8 @@ module.exports = (mongoose, Schema) => {
     featured: { type: Boolean, required: true },
     slug: { type: String, required: true },
   });
+
+  const Product = mongoose.model("Product", ProductSchema);
+
+  return Product;
 };

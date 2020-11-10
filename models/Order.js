@@ -9,4 +9,8 @@ module.exports = (mongoose, Schema) => {
     },
     { timestamps: true }
   );
+
+  const Order = mongoose.model("Order", OrderSchema);
+
+  return Order;
 };
