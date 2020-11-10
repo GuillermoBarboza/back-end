@@ -1,5 +1,26 @@
-import OrderSchema from "./Order";
-import ProductSchema from "./Product";
-import UserSchema from "./User";
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+mongoose.connect(
+  `mongodb+srv://root:${process.env.DB_PASSWORD}@e-commerce.k4gty.mongodb.net/${process.env.DB_DATABASE}`
+);
+mongoose.set("useFindAndModify", false);
+const UserModel = require("./User");
+const ProductModel = require("./Product");
+const OrderModel = require("./Order");
 
-export { OrderSchema, ProductSchema, UserSchema };
+const User = UserModel(mongoose, Schema);
+const Product = ProductModel(mongoose, Schema);
+const Order = OrderModel(mongoose, Schema);
+
+const db = mongoose.connection;
+db.on("error", (error) => console.log(error));
+db.once("open", (e) =>
+  console.log("¡Conexión con la base de datos establecida!")
+);
+
+module.exports = {
+  mongoose,
+  User,
+  Product,
+  Order,
+};
