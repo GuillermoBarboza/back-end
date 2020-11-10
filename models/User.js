@@ -7,8 +7,9 @@ module.exports = (mongoose, Schema) => {
     lastname: { type: String, required: true },
     email: { type: String, required: true },
     address: { type: String, required: true },
-    telephone: { type: Number, required: true },
+    telephone: { type: String, required: true },
     password: { type: String, required: true },
+    admin: { type: Boolean, required: true },
     orderlist: [{ type: Schema.Types.ObjectId, ref: "Order" }],
     tokens: [],
   });

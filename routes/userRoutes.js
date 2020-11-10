@@ -8,3 +8,5 @@ function userRoutes(app) {
 }
 
 module.exports = userRoutes;
+
+/* jwt({ secret: process.env.JWT_SECRET, algorithms: ["HS256"] }), */
