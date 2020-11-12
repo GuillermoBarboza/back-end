@@ -1,9 +1,11 @@
-const { Product } = require("../models");
+const { Category } = require("../models");
 
 module.exports = {
   index: async (req, res) => {
     const { category } = req.params;
-    const products = await Product.find({ category: category });
+    const products = await Category.find({ name: category }).populate(
+      "productsList"
+    );
     res.json(products);
   },
 };

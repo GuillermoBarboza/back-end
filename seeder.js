@@ -17,9 +17,9 @@ const kitchen = [
 ];
 
 const banner = [homeAudio, bathroom, kitchen];
-const bannername = ["Home Audio", "Bathroom", "Kitchen"];
+const bannername = ["home-audio", "bathroom", "kitchen"];
 
-const Seed = async (User, Category, Product) => {
+const Seed = (User, Category, Product) => {
   for (let i = 0; i < 5; i++) {
     const user = new User({
       name: faker.name.firstName(),
@@ -30,7 +30,7 @@ const Seed = async (User, Category, Product) => {
       password: "1234",
       admin: false,
     });
-    await user.save();
+    user.save();
   }
 
   for (let j = 0; j < 3; j++) {
@@ -52,10 +52,10 @@ const Seed = async (User, Category, Product) => {
         slug: faker.lorem.slug(),
       });
 
-      await product.save();
+      product.save();
       category.productsList.push(product);
     }
-    await category.save();
+    category.save();
   }
 };
 
