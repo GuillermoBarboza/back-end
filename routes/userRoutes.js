@@ -1,4 +1,3 @@
-const jwt = require("express-jwt");
 const { register, logIn } = require("../controllers/userController");
 
 function userRoutes(app) {
@@ -8,5 +7,3 @@ function userRoutes(app) {
 }
 
 module.exports = userRoutes;
-
-/* jwt({ secret: process.env.JWT_SECRET, algorithms: ["HS256"] }), */

@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const { User } = require("../models");
 
 const createToken = (user) => {
-  return jwt.sign({ sub: user }, process.env.JWT_SECRET);
+  return jwt.sign(user, process.env.JWT_SECRET);
 };
 
 module.exports = {
@@ -14,9 +14,14 @@ module.exports = {
       address: req.body.address,
       telephone: req.body.telephone,
       password: req.body.password,
+      admin: false,
     });
     user.tokens = [createToken(user.id)];
-    user.save().then(res.json(user));
+    user
+      .save()
+      .then(
+        res.json({ name: user.name, token: user.tokens[0], admin: user.admin })
+      );
   },
 
   logIn: async (req, res) => {
@@ -33,7 +38,11 @@ module.exports = {
       user.tokens.push(newToken);
       user.save();
 
-      res.json(user);
+      res.json({
+        name: user.name,
+        token: user.tokens[user.tokens.length - 1],
+        admin: user.admin,
+      });
     } catch (err) {
       console.log("Something failed", err);
       res.status(500).json({ message: "Something failed on server side" });
