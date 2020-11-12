@@ -1,7 +1,7 @@
 const faker = require("faker");
 
 const Seed = (User, Product) => {
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 5; i++) {
     const user = new User({
       name: faker.name.firstName(),
       lastname: faker.name.lastName(),
@@ -15,7 +15,7 @@ const Seed = (User, Product) => {
     user.save();
   }
 
-  for (let j = 0; j < 20; j++) {
+  for (let j = 0; j < 10; j++) {
     const product = new Product({
       name: faker.commerce.productName(),
       description: faker.commerce.productDescription(),
@@ -23,6 +23,7 @@ const Seed = (User, Product) => {
       price: faker.commerce.price(),
       stock: Math.floor(Math.random() * 20 + 1),
       featured: false,
+      category: "bathroom",
       slug: faker.lorem.slug(),
     });
     product.save();

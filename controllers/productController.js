@@ -2,7 +2,13 @@ const { Product } = require("../models");
 
 module.exports = {
   getProducts: async (req, res) => {
-    const products = await Product.find();
+    const products = await Product.find(undefined);
+    res.json(products);
+  },
+
+  getCategory: async (req, res) => {
+    const { category } = req.params;
+    const products = await Product.find({ category: category });
     res.json(products);
   },
 
