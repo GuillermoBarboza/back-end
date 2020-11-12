@@ -29,4 +29,4 @@ module.exports = {
   Category,
 };
 
-/* Seed(User, Product); */
+/* Seed(User, Category, Product); */
