@@ -48,7 +48,7 @@ const Seed = (User, Category, Product) => {
         price: faker.commerce.price(),
         stock: Math.floor(Math.random() * 20 + 1),
         featured: false,
-        category: bannername[j],
+        category: category._id,
         slug: faker.lorem.slug(),
       });
 

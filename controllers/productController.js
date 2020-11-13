@@ -19,6 +19,18 @@ module.exports = {
     res.json(product);
   },
 
+  updateProduct: async (req, res) => {
+    const product = await Product.findOneAndUpdate(
+      { _id: req.body._id },
+      req.body,
+      {
+        new: true,
+      }
+    );
+    console.log(req.body);
+    res.json("product updated");
+  },
+
   deleteProduct: async (req, res) => {
     const products = await Product.findByIdAndDelete(req.body._id);
     res.json("product deleted");
