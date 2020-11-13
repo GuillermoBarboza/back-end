@@ -2,13 +2,14 @@ const { Product } = require("../models");
 
 module.exports = {
   getProducts: async (req, res) => {
-    const products = await Product.find(undefined);
+    const products = await Product.find();
     res.json(products);
   },
 
-  getCategory: async (req, res) => {
-    const { category } = req.params;
-    const products = await Product.find({ category: category });
+  getProductsByName: async (req, res) => {
+    const products = await Product.find({
+      name: { $regex: req.query.name, $options: "i" },
+    });
     res.json(products);
   },
 
