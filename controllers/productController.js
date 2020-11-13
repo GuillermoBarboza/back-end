@@ -27,7 +27,6 @@ module.exports = {
         new: true,
       }
     );
-    console.log(req.body);
     res.json("product updated");
   },
 
