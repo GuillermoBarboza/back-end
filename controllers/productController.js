@@ -14,17 +14,9 @@ module.exports = {
   },
 
   createProduct: async (req, res) => {
-    const product = await new Product({
-      name: "",
-      description: "",
-      image: "",
-      price: 0,
-      category: "",
-      stock: 0,
-      featured: false,
-      slug: "",
-    });
-    product.save().then(res.json(product));
+    const product = await new Product(req.body);
+    await product.save();
+    res.json(product);
   },
 
   deleteProduct: async (req, res) => {

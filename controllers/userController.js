@@ -17,11 +17,8 @@ module.exports = {
       admin: false,
     });
     user.tokens = [createToken(user.id)];
-    user
-      .save()
-      .then(
-        res.json({ name: user.name, token: user.tokens[0], admin: user.admin })
-      );
+    await user.save();
+    res.json({ name: user.name, token: user.tokens[0], admin: user.admin });
   },
 
   logIn: async (req, res) => {
