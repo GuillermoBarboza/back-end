@@ -64,4 +64,9 @@ module.exports = {
     });
     res.json("user updated");
   },
+
+  deleteUser: async (req, res) => {
+    const users = await User.findByIdAndDelete(req.body._id);
+    res.json("user deleted");
+  },
 };
