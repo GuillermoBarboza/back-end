@@ -45,4 +45,23 @@ module.exports = {
       res.status(500).json({ message: "Something failed on server side" });
     }
   },
+
+  getUsers: async (req, res) => {
+    const users = await User.find().limit(20);
+    res.json(users);
+  },
+
+  getUserByName: async (req, res) => {
+    const users = await User.find({
+      name: { $regex: req.query.name, $options: "i" },
+    }).limit(10);
+    res.json(users);
+  },
+
+  updateUser: async (req, res) => {
+    const user = await User.findOneAndUpdate({ _id: req.body._id }, req.body, {
+      new: true,
+    });
+    res.json("user updated");
+  },
 };
