@@ -4,14 +4,17 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "aws-sdk": "^2.792.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-jwt": "^6.0.0",
     "faker": "^5.1.0",
+    "formidable": "^1.2.2",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.13"
+    "mongoose": "^5.10.13",
+    "uuid": "^8.3.1"
   },
   "devDependencies": {},
   "scripts": {

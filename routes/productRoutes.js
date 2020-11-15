@@ -4,6 +4,7 @@ const {
   createProduct,
   updateProduct,
   deleteProduct,
+  uploadImage,
 } = require("../controllers/productController");
 
 function productRoutes(app) {
@@ -16,6 +17,8 @@ function productRoutes(app) {
   app.put("/api/v1/products", updateProduct);
 
   app.delete("/api/v1/products", deleteProduct);
+
+  
 }
 
 module.exports = productRoutes;
