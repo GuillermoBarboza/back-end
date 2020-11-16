@@ -19,7 +19,7 @@ module.exports = {
       banner: [],
     });
     await category.save();
-    res.json({ name: category.name });
+    res.json(category);
   },
 
   update: async (req, res) => {
