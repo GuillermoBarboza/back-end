@@ -8,12 +8,14 @@ const UserModel = require("./User");
 const ProductModel = require("./Product");
 const OrderModel = require("./Order");
 const CategoryModel = require("./Category");
+const BrandModel = require("./Brand");
 const { Seed } = require("../seeder");
 
 const User = UserModel(mongoose, Schema);
 const Product = ProductModel(mongoose, Schema);
 const Order = OrderModel(mongoose, Schema);
 const Category = CategoryModel(mongoose, Schema);
+const Brand = BrandModel(mongoose, Schema);
 
 const db = mongoose.connection;
 db.on("error", (error) => console.log(error));
@@ -27,6 +29,7 @@ module.exports = {
   Product,
   Order,
   Category,
+  Brand,
 };
 
 /* Seed(User, Category, Product); */
