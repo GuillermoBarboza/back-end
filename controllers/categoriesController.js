@@ -32,4 +32,14 @@ module.exports = {
     );
     res.json("category updated");
   },
+
+  erase: async (req, res) => {
+    const category = await Category.findById(req.body._id);
+    if (category.productsList.length > 0) {
+      return res.json("unable to delete category");
+    } else {
+      const category = await Category.findByIdAndDelete(req.body._id);
+      return res.json("category deleted");
+    }
+  },
 };
