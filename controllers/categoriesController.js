@@ -2,10 +2,14 @@ const { Category } = require("../models");
 
 module.exports = {
   index: async (req, res) => {
-    const { category } = req.params;
-    const products = await Category.find({ name: category }).populate(
-      "productsList"
-    );
-    res.json(products);
+    const categories = await Category.find().limit(30);
+    res.json(categories);
+  },
+
+  show: async (req, res) => {
+    const category = await Category.find({
+      name: { $regex: req.query.name, $options: "i" },
+    }).limit(10);
+    res.json(category);
   },
 };

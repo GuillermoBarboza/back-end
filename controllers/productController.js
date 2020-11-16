@@ -1,4 +1,4 @@
-const { Product } = require("../models");
+const { Product, User } = require("../models");
 const formidable = require("formidable");
 const { s3 } = require("../awsConfig");
 const fs = require("fs");
@@ -16,6 +16,14 @@ module.exports = {
     res.json(products);
   },
 
+  getProductsByCategory: async (req, res) => {
+    const { category } = req.params;
+    const products = await Category.find({ name: category }).populate(
+      "productsList"
+    );
+    res.json(products);
+  },
+
   createProduct: async (req, res) => {
     const form = formidable({ multiples: true });
 
@@ -24,7 +32,7 @@ module.exports = {
         console.log(err);
         return;
       }
-      
+
       let product = await new Product(fields);
       product.image = `https://carlitosbucket.s3-sa-east-1.amazonaws.com/${
         product._id
@@ -54,7 +62,7 @@ module.exports = {
         console.log(err);
         return;
       }
-      
+
       const product = await Product.findOneAndUpdate(
         { _id: fields._id },
         fields,
@@ -77,9 +85,8 @@ module.exports = {
       s3.putObject(data, async () => {
         console.log("Successfully uploaded data to myBucket/myKey");
       });
-
     });
-    
+
     res.json("product updated");
   },
 
@@ -87,6 +94,4 @@ module.exports = {
     const products = await Product.findByIdAndDelete(req.body._id);
     res.json("product deleted");
   },
-
-  
 };
