@@ -12,4 +12,24 @@ module.exports = {
     }).limit(10);
     res.json(category);
   },
+
+  create: async (req, res) => {
+    const category = await new Category({
+      name: req.body.name,
+      banner: [],
+    });
+    await category.save();
+    res.json({ name: category.name });
+  },
+
+  update: async (req, res) => {
+    const category = await Category.findOneAndUpdate(
+      { _id: req.body._id },
+      req.body,
+      {
+        new: true,
+      }
+    );
+    res.json("category updated");
+  },
 };
