@@ -1,4 +1,4 @@
-const { Product, User } = require("../models");
+const { Product, User, Category } = require("../models");
 const formidable = require("formidable");
 const { s3 } = require("../awsConfig");
 const fs = require("fs");
