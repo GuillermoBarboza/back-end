@@ -16,12 +16,39 @@ module.exports = {
   create: async (req, res) => {
     const user = await User.findById(req.user);
     if (user.admin === true) {
+      const form = formidable({ multiples: true });
+
       const category = await new Category({
         name: req.body.name,
         banner: [],
       });
-      await category.save();
-      return res.json(category);
+      form.parse(req, async (err, fields, files) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        console.log(files, fields);
+        let category = await new Category(fields);
+        if (files.image !== undefined) {
+          category.image = `https://carlitosbucket.s3-sa-east-1.amazonaws.com/${
+            category._id
+          }.${files.image.type.replace("image/", "")}`;
+          console.log(category);
+          let img = fs.readFileSync(files.image.path);
+          let data = {
+            Bucket: "carlitosbucket",
+            Key: `${category._id}.${files.image.type.replace("image/", "")}`,
+            ContentType: files.image.type,
+            Body: img,
+          };
+          s3.putObject(data, async () => {
+            console.log("Successfully uploaded data to myBucket/myKey");
+          });
+        }
+
+        await category.save();
+        return res.json(category);
+      });
     } else {
       return res.json("unauthorized");
     }
@@ -30,14 +57,40 @@ module.exports = {
   update: async (req, res) => {
     const user = await User.findById(req.user);
     if (user.admin === true) {
-      const category = await Category.findOneAndUpdate(
-        { _id: req.body._id },
-        req.body,
-        {
-          new: true,
+      const form = formidable({ multiples: true });
+
+      form.parse(req, async (err, fields, files) => {
+        if (err) {
+          console.log(err);
+          return;
         }
-      );
-      return res.json("category updated");
+
+        const category = await Category.findByIdAndUpdate(fields._id, fields, {
+          new: true,
+        });
+        if (files.image !== undefined) {
+          category.image = `https://carlitosbucket.s3-sa-east-1.amazonaws.com/${
+            category._id
+          }.${files.imageFile.type.replace("image/", "")}`;
+
+          console.log(category);
+          let img = fs.readFileSync(files.imageFile.path);
+          let data = {
+            Bucket: "carlitosbucket",
+            Key: `${category._id}.${files.imageFile.type.replace(
+              "image/",
+              ""
+            )}`,
+            ContentType: files.imageFile.type,
+            Body: img,
+          };
+          s3.putObject(data, async () => {
+            console.log("Successfully uploaded data to myBucket/myKey");
+          });
+        }
+        await category.save();
+        return res.json(category);
+      });
     } else {
       return res.json("unauthorized");
     }
