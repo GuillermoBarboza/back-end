@@ -1,5 +1,9 @@
 const jwt = require("express-jwt");
-const { store, index } = require("../controllers/orderController");
+const {
+  store,
+  getChartOrders,
+  index,
+} = require("../controllers/orderController");
 
 function orderRoutes(app) {
   app.post(
@@ -12,6 +16,12 @@ function orderRoutes(app) {
     "/api/v1/orders",
     jwt({ secret: process.env.JWT_SECRET, algorithms: ["HS256"] }),
     index
+  );
+
+  app.get(
+    "/api/v1/orders/chart",
+    jwt({ secret: process.env.JWT_SECRET, algorithms: ["HS256"] }),
+    getChartOrders
   );
 }
 

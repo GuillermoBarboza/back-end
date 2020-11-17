@@ -16,10 +16,20 @@ module.exports = {
     res.json("Thanks for buying here");
   },
 
-  index: async (req, res) => {
+  getChartOrders: async (req, res) => {
     const user = await User.findById(req.user);
     if (user.admin === true) {
       const orders = await Order.find({ state: "paid" }).sort("-createdAt");
+      return res.json(orders);
+    } else {
+      return res.json("unauthorized");
+    }
+  },
+
+  index: async (req, res) => {
+    const user = await User.findById(req.user);
+    if (user.admin === true) {
+      const orders = await Order.find().populate("buyer");
       return res.json(orders);
     } else {
       return res.json("unauthorized");
