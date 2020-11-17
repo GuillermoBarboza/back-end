@@ -14,4 +14,10 @@ module.exports = {
     );
     res.json("Thanks for buying here");
   },
+
+  index: async (req, res) => {
+    const orders = await Order.find({state: "paid"}).sort('-createdAt');
+    res.json(orders);
+  },
+
 };
