@@ -55,19 +55,29 @@ module.exports = {
   },
 
   getUsers: async (req, res) => {
-    const users = await User.find().limit(20);
-    res.json(users);
+    const user = await User.findById(req.user);
+    if (user.admin === true) {
+      const users = await User.find().limit(20);
+      return res.json(users);
+    } else {
+      return res.json("unauthorized");
+    }
   },
 
   getUserByName: async (req, res) => {
-    const users = await User.find({
-      name: { $regex: req.query.name, $options: "i" },
-    }).limit(10);
-    res.json(users);
+    const user = await User.findById(req.user);
+    if (user.admin === true) {
+      const users = await User.find({
+        name: { $regex: req.query.name, $options: "i" },
+      }).limit(10);
+      return res.json(users);
+    } else {
+      return res.json("unauthorized");
+    }
   },
 
   updateUser: async (req, res) => {
-    const user = await User.findOneAndUpdate({ _id: req.body._id }, req.body, {
+    const user = await User.findByIdAndUpdate(req.body._id, req.body, {
       new: true,
     });
     res.json("user updated");

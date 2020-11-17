@@ -25,73 +25,88 @@ module.exports = {
   },
 
   createProduct: async (req, res) => {
-    const form = formidable({ multiples: true });
+    const user = await User.findById(req.user);
+    if (user.admin === true) {
+      const form = formidable({ multiples: true });
 
-    form.parse(req, async (err, fields, files) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
+      form.parse(req, async (err, fields, files) => {
+        if (err) {
+          console.log(err);
+          return;
+        }
 
-      let product = await new Product(fields);
-      product.image = `https://carlitosbucket.s3-sa-east-1.amazonaws.com/${
-        product._id
-      }.${files.imageFile.type.replace("image/", "")}`;
-      await product.save();
-      console.log(product);
-      let img = fs.readFileSync(files.imageFile.path);
-      let data = {
-        Bucket: "carlitosbucket",
-        Key: `${product._id}.${files.imageFile.type.replace("image/", "")}`,
-        ContentType: files.imageFile.type,
-        Body: img,
-      };
-      s3.putObject(data, async () => {
-        console.log("Successfully uploaded data to myBucket/myKey");
+        let product = await new Product(fields);
+        product.image = `https://carlitosbucket.s3-sa-east-1.amazonaws.com/${
+          product._id
+        }.${files.imageFile.type.replace("image/", "")}`;
+        await product.save();
+        console.log(product);
+        let img = fs.readFileSync(files.imageFile.path);
+        let data = {
+          Bucket: "carlitosbucket",
+          Key: `${product._id}.${files.imageFile.type.replace("image/", "")}`,
+          ContentType: files.imageFile.type,
+          Body: img,
+        };
+        s3.putObject(data, async () => {
+          console.log("Successfully uploaded data to myBucket/myKey");
+        });
+
+        return res.json(product);
       });
-
-      res.json(product);
-    });
+    } else {
+      return res.json("unauthorized");
+    }
   },
 
   updateProduct: async (req, res) => {
-    const form = formidable({ multiples: true });
+    const user = await User.findById(req.user);
+    if (user.admin === true) {
+      const form = formidable({ multiples: true });
 
-    form.parse(req, async (err, fields, files) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-
-      const product = await Product.findOneAndUpdate(
-        { _id: fields._id },
-        fields,
-        {
-          new: true,
+      form.parse(req, async (err, fields, files) => {
+        if (err) {
+          console.log(err);
+          return;
         }
-      );
-      product.image = `https://carlitosbucket.s3-sa-east-1.amazonaws.com/${
-        product._id
-      }.${files.imageFile.type.replace("image/", "")}`;
-      await product.save();
-      console.log(product);
-      let img = fs.readFileSync(files.imageFile.path);
-      let data = {
-        Bucket: "carlitosbucket",
-        Key: `${product._id}.${files.imageFile.type.replace("image/", "")}`,
-        ContentType: files.imageFile.type,
-        Body: img,
-      };
-      s3.putObject(data, async () => {
-        console.log("Successfully uploaded data to myBucket/myKey");
-      });
-    });
 
-    res.json("product updated");
+        const product = await Product.findOneAndUpdate(
+          { _id: fields._id },
+          fields,
+          {
+            new: true,
+          }
+        );
+        product.image = `https://carlitosbucket.s3-sa-east-1.amazonaws.com/${
+          product._id
+        }.${files.imageFile.type.replace("image/", "")}`;
+        await product.save();
+        console.log(product);
+        let img = fs.readFileSync(files.imageFile.path);
+        let data = {
+          Bucket: "carlitosbucket",
+          Key: `${product._id}.${files.imageFile.type.replace("image/", "")}`,
+          ContentType: files.imageFile.type,
+          Body: img,
+        };
+        s3.putObject(data, async () => {
+          console.log("Successfully uploaded data to myBucket/myKey");
+        });
+      });
+
+      return res.json("product updated");
+    } else {
+      return res.json("unauthorized");
+    }
   },
 
   deleteProduct: async (req, res) => {
-    const products = await Product.findByIdAndDelete(req.body._id);
-    res.json("product deleted");
+    const user = await User.findById(req.user);
+    if (user.admin === true) {
+      const products = await Product.findByIdAndDelete(req.body._id);
+      return res.json("product deleted");
+    } else {
+      return res.json("unauthorized");
+    }
   },
 };

@@ -1,3 +1,4 @@
+const jwt = require("express-jwt");
 const {
   register,
   logIn,
@@ -12,13 +13,29 @@ function userRoutes(app) {
 
   app.post("/api/v1/users/find", logIn);
 
-  app.get("/api/v1/users", getUsers);
+  app.get(
+    "/api/v1/users",
+    jwt({ secret: process.env.JWT_SECRET, algorithms: ["HS256"] }),
+    getUsers
+  );
 
-  app.get("/api/v1/users/search", getUserByName);
+  app.get(
+    "/api/v1/users/search",
+    jwt({ secret: process.env.JWT_SECRET, algorithms: ["HS256"] }),
+    getUserByName
+  );
 
-  app.put("/api/v1/users", updateUser);
+  app.put(
+    "/api/v1/users",
+    jwt({ secret: process.env.JWT_SECRET, algorithms: ["HS256"] }),
+    updateUser
+  );
 
-  app.delete("/api/v1/users", deleteUser);
+  app.delete(
+    "/api/v1/users",
+    jwt({ secret: process.env.JWT_SECRET, algorithms: ["HS256"] }),
+    deleteUser
+  );
 }
 
 module.exports = userRoutes;

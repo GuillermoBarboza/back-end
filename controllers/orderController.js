@@ -17,8 +17,12 @@ module.exports = {
   },
 
   index: async (req, res) => {
-    const orders = await Order.find({state: "paid"}).sort('-createdAt');
-    res.json(orders);
+    const user = await User.findById(req.user);
+    if (user.admin === true) {
+      const orders = await Order.find({ state: "paid" }).sort("-createdAt");
+      return res.json(orders);
+    } else {
+      return res.json("unauthorized");
+    }
   },
-
 };
