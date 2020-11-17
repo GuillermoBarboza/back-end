@@ -6,6 +6,7 @@ module.exports = {
       buyer: req.user,
       products: req.body.cart,
       state: "pending",
+      total: req.body.total,
     });
     await order.save();
     await User.findByIdAndUpdate(

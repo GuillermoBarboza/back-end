@@ -4,8 +4,9 @@ module.exports = (mongoose, Schema) => {
   const OrderSchema = new Schema(
     {
       buyer: { type: Schema.Types.ObjectId, ref: "User" },
-      products: [{ type: Schema.Types.ObjectId, ref: "Product" }],
+      products: [],
       state: { type: String, required: true },
+      total: { type: Number, required: true },
     },
     { timestamps: true }
   );
